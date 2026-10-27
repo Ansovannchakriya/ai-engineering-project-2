@@ -1,0 +1,6 @@
+# Everything for working on the project locally: the above, plus notebooks, plots and tests
+-r requirements.txt
+matplotlib>=3.8
+jupyterlab>=4.2
+pytest>=8
+ruff>=0.6

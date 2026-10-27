@@ -1,0 +1,5 @@
+# What the API and the training script need (this is what the Docker image installs)
+pandas>=2.2
+scikit-learn>=1.5
+joblib>=1.4
+fastapi[standard]>=0.115

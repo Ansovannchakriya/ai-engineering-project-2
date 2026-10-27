@@ -1,0 +1,67 @@
+# Sample requests for the API. Start it first, either way:
+#   fastapi dev app/main.py             (on your computer)
+#   docker compose up --build           (in Docker)
+# VS Code: install the "REST Client" extension, then click "Send Request" above a request.
+# JetBrains IDEs run this file as is.
+
+@base = http://127.0.0.1:8000
+
+### Is the API up? Is the model loaded?
+GET {{base}}/health
+
+### How was the model trained, how good is it, which features matter?
+GET {{base}}/models
+
+### Invent a character: a young Stark knight with 3 dead relatives
+POST {{base}}/got/predict
+Content-Type: application/json
+
+{
+  "name": "Ser Sovann of Phnom Penh",
+  "male": true,
+  "house": "stark",
+  "culture": "northmen",
+  "title": "knight",
+  "noble": true,
+  "married": false,
+  "age": 21,
+  "dead_relatives": 3,
+  "popularity": 0.6,
+  "books": [1, 2, 3]
+}
+
+### A quiet maester who only shows up in book 4 (leave out what you don't know)
+POST {{base}}/got/predict
+Content-Type: application/json
+
+{
+  "name": "Maester Nobody",
+  "title": "maester",
+  "books": [4]
+}
+
+### Several characters in one call
+POST {{base}}/got/predict/batch
+Content-Type: application/json
+
+[
+  {"name": "Doomed Prince", "house": "targaryen", "title": "royalty", "noble": true,
+   "dead_relatives": 8, "popularity": 0.9, "age": 30, "books": [1]},
+  {"name": "Lucky Steward", "house": "night's watch", "title": "office", "books": [4, 5]}
+]
+
+### Real characters: what the model says vs. what the books say
+GET {{base}}/got/characters?search=Stark&limit=5
+
+### Is Jon Snow safe?
+GET {{base}}/got/characters?search=Jon Snow
+
+### Invalid input -> 422 (book 6 is not out, "House Stark" is not a valid value, unknown field)
+POST {{base}}/got/predict
+Content-Type: application/json
+
+{
+  "house": "House Stark",
+  "books": [6],
+  "has_dragons": true
+}

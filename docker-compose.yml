@@ -1,0 +1,10 @@
+# One command to build and start the API:  docker compose up --build
+# Stop it:                                 docker compose down
+services:
+  api:
+    build: .
+    image: got-survival-api
+    container_name: got-survival-api
+    ports:
+      - "8000:8000"   # your computer's port : the container's port
+    restart: unless-stopped

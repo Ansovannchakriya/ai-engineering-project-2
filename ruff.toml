@@ -1,0 +1,11 @@
+# Same style as project 1, standalone so this folder can be copied out.
+line-length = 100
+target-version = "py310"
+extend-exclude = ["notebooks"]
+
+[lint]
+select = ["E", "F", "I", "B", "UP", "SIM", "N"]
+ignore = ["N803", "N806"]  # sklearn-style X / y names
+
+[lint.isort]
+known-first-party = ["app", "train_got"]

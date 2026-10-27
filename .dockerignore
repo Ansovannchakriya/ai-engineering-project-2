@@ -1,0 +1,11 @@
+# Keep the image small: Docker only needs data/, train_got.py, app/ and requirements.txt.
+.git
+.venv
+**/__pycache__
+.pytest_cache
+.ruff_cache
+.ipynb_checkpoints
+models/*.joblib
+notebooks/
+tests/
+*.http
