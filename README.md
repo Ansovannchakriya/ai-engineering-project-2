@@ -102,16 +102,36 @@ Open <http://127.0.0.1:8000/docs>: every endpoint with an example you can send f
 | POST | `/got/predict/batch` | A list of characters in one call |
 | GET | `/got/characters?search=Stark` | Real characters: what the model says vs. what the books say |
 
+Two real characters from the data, with their values exactly as the dataset records them.
+
+**Arya Stark: survives** (a test-set character: the model never saw her during training)
+
 ```bash
 curl -s http://127.0.0.1:8000/got/predict -H "Content-Type: application/json" -d '{
-  "name": "Ser Sovann of Phnom Penh", "male": true, "house": "stark", "culture": "northmen",
-  "title": "knight", "noble": true, "married": false, "age": 21, "dead_relatives": 3,
-  "popularity": 0.6, "books": [1, 2, 3]
+  "name": "Arya Stark", "male": false, "house": "stark", "culture": "northmen",
+  "title": "royalty", "noble": true, "married": false, "age": 16, "dead_relatives": 8,
+  "popularity": 1.0, "books": [1, 2, 3, 4, 5]
 }'
-# {"name":"Ser Sovann of Phnom Penh","death_probability":0.6749,"survival_chance":"33%",
-#  "dies":true,"verdict":"dies","threshold":0.31,
-#  "comment":"Winter came for you. Whatever you do, decline every wedding invitation.", ...}
+# {"name":"Arya Stark","death_probability":0.2256,"survival_chance":"77%",
+#  "dies":false,"verdict":"survives","threshold":0.31,
+#  "comment":"You survive... for now. Keep your head down and your friends close.", ...}
 ```
+
+**Eddard (Ned) Stark: dies** (a training-set character; the books agree)
+
+```bash
+curl -s http://127.0.0.1:8000/got/predict -H "Content-Type: application/json" -d '{
+  "name": "Eddard Stark", "male": true, "house": "stark", "culture": "northmen",
+  "title": "lord or lady", "noble": true, "married": true, "age": 36, "dead_relatives": 6,
+  "popularity": 1.0, "books": [1, 2, 3, 4, 5]
+}'
+# {"name":"Eddard Stark","death_probability":0.4272,"survival_chance":"57%",
+#  "dies":true,"verdict":"dies","threshold":0.31,
+#  "comment":"Probably dead by the end of book 5. Trust no one.", ...}
+```
+
+Ned is listed in all five books although he dies in book 1: the wiki counts every book that
+mentions a character. Probabilities can differ slightly with another scikit-learn version.
 
 Every field has a default, so you can leave out what you don't know (`{}` is a valid character).
 More requests, including invalid ones, are in [`requests.http`](requests.http).
